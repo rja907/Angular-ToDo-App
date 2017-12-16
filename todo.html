@@ -1,0 +1,46 @@
+<!doctype html>
+<html data-ng-app="myApp">
+	<head>
+		    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+
+	</head>
+	<style type="text/css">body{background-color: red;}.done{text-decoration: line-through; color:#fff;}div{text-align: center;}p{text-align: left;}</style>
+	<body>
+		<div data-ng-controller="fooController">
+
+			<h1>To Do List:</h1><br>
+			<h2>Enter an item to add to your List:<h2><br>
+			<form name="fooForm" data-ng-submit="addTodoItem()">
+				<input type="text" name="fooTodo" data-ng-model="listItem" required>
+				<button data-ng-disabled="fooForm.$invalid">Enter</button>
+			</form>
+			<button data-ng-click="clearCompleted()">Clear Completed Items!</button>
+			<ul>
+				<p data-ng-repeat="todo in todos">
+					<input type="checkbox" name="chek" data-ng-model="todo.done" />
+					<span data-ng-class="{'done':todo.done}">
+						{{todo.title}}
+					</span>
+				</p>
+			</ul>
+		</div>
+		<script>
+			angular.module("myApp", []).
+			controller('fooController', ['$scope', function ($scope) {
+				$scope.todos = [
+					{'title':'Build a Todo app!', 'done': false}
+				];
+
+				$scope.addTodoItem = function(){
+					$scope.todos.push({'title': $scope.listItem, 'done': false})
+					$scope.listItem = ''
+				}
+				$scope.clearCompleted = function(){
+					$scope.todos = $scope.todos.filter(function(item){
+						return !item.done
+					})
+				}
+			} ])
+		</script>
+	</body>
+</html>
